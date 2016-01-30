@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -38,7 +39,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
-                            print("response: \(responseDictionary)")
                             self.movies = (responseDictionary["results"] as! [NSDictionary])
                             self.tableView.reloadData()
                     }
@@ -71,6 +71,15 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
+        
+        if let posterPath = movie["poster_path"] as? String {
+            let baseUrl = "http://image.tmdb.org/t/p/w500"
+            let imageUrl = NSURL(string: baseUrl + posterPath)
+            cell.posterView.setImageWithURL(imageUrl!)
+            print(imageUrl)
+        } else {
+            cell.posterView.image = nil
+        }
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
