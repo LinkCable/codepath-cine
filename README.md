@@ -1,8 +1,8 @@
-# Project 1 - *Name of App Here*
+# Project 1 - Cine
 
-**Name of your app** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
+**Cine** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **X** hours spent in total
+Time spent: **1** hours spent in total
 
 ## User Stories
 
@@ -34,17 +34,14 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+<img src='http://i.imgur.com/CjYmEPA.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Notes
-
-Describe any challenges encountered while building the app.
+Still have to do optional and improve design
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2016] [Philippe Kimura-Thollander]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
