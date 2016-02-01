@@ -83,7 +83,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             let baseUrl = "http://image.tmdb.org/t/p/w500"
             let imageUrl = NSURL(string: baseUrl + posterPath)
             cell.posterView.setImageWithURL(imageUrl!)
-            print(imageUrl)
         } else {
             cell.posterView.image = nil
         }
