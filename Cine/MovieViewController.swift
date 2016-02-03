@@ -20,38 +20,13 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.dataSource = self;
-        tableView.delegate = self;
-        
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-        let request = NSURLRequest(
-            URL: url!,
-            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
-            timeoutInterval: 10)
-        
-        let session = NSURLSession(
-            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
-            delegate: nil,
-            delegateQueue: NSOperationQueue.mainQueue()
-        )
+        tableView.dataSource = self
+        tableView.delegate = self
         
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        let task: NSURLSessionDataTask = session.dataTaskWithRequest(request,
-            completionHandler: { (dataOrNil, response, error) in
-                if let data = dataOrNil {
-                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
-                        data, options:[]) as? NSDictionary {
-                            self.movies = (responseDictionary["results"] as! [NSDictionary])
-                            MBProgressHUD.hideHUDForView(self.view, animated: true)
-                            self.tableView.reloadData()
-                    }
-                }
-        })
-        task.resume()
-        
+        grabMovies(nil)
 
-        // Do any additional setup after loading the view.
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshMovieList:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
@@ -95,6 +70,12 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func refreshMovieList(refreshControl: UIRefreshControl) {
         
+        grabMovies(refreshControl)
+        
+    }
+    
+    func grabMovies(refreshControl: UIRefreshControl?) {
+        
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,
@@ -114,10 +95,16 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                         data, options:[]) as? NSDictionary {
                             self.movies = (responseDictionary["results"] as! [NSDictionary])
                             self.tableView.reloadData()
-                            refreshControl.endRefreshing()
+                            if refreshControl != nil {
+                                refreshControl!.endRefreshing()
+                            }
+                            else {
+                                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                            }
                     }
                 }
         })
+        
         task.resume()
 
     }
