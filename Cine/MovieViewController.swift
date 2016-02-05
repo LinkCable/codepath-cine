@@ -9,16 +9,17 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import ReachabilitySwift
 
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     var movies: [NSDictionary]?
-    let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Cine"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -30,6 +31,40 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshMovieList:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
+        
+        
+        //code for no internet connection 
+        //http://stackoverflow.com/questions/31400192/popup-alert-when-reachability-connection-is-lost-during-using-the-app-ios-xcode
+        
+        let reachability: Reachability
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+        } catch {
+            print("Unable to create Reachability")
+            return
+        }
+        
+        reachability.whenReachable = { reachability in
+            if reachability.isReachableViaWiFi() {
+                            }
+            else {
+                           }
+        }
+        reachability.whenUnreachable = { reachability in
+            let alertController = UIAlertController(title: "Alert", message: "No Internet Connection", preferredStyle: .Alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start Reachability")
+            return
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,7 +110,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func grabMovies(refreshControl: UIRefreshControl?) {
-        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
         let request = NSURLRequest(
             URL: url!,

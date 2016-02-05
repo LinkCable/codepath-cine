@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -27,7 +32,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7BF821BD5C10EDA181B3205802ECFDFB</key>
+		<key>4F09852F001F0667C912A19BD109FF45</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>72E4A7002F942A8503214777C8883D5F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

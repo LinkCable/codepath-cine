@@ -86,8 +86,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Cine/AFNetworking.framework"
   install_framework "Pods-Cine/MBProgressHUD.framework"
+  install_framework "Pods-Cine/ReachabilitySwift.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Cine/AFNetworking.framework"
   install_framework "Pods-Cine/MBProgressHUD.framework"
+  install_framework "Pods-Cine/ReachabilitySwift.framework"
 fi

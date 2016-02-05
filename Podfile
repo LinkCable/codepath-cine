@@ -6,4 +6,5 @@ use_frameworks!
 target 'Cine' do
     pod 'AFNetworking'
     pod 'MBProgressHUD'
+    pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift'
 end
