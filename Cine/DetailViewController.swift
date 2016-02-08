@@ -21,7 +21,9 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.size.height + infoView.frame.origin.y)
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.size.height + scrollView.frame.size.height)
+        
+        
         
         // Do any additional setup after loading the view.
         let title = movie["title"] as? String
