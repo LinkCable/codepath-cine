@@ -16,6 +16,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        let tabBarController = UITabBarController()
+        
+        let nowPlayingNavigationController = createMovieTab("now_playing")
+        nowPlayingNavigationController.tabBarItem.title = "Now Playing"
+        nowPlayingNavigationController.tabBarItem.image = UIImage(named: "film_reel")
+        
+        let topRatedNavigationController = createMovieTab("top_rated")
+        topRatedNavigationController.tabBarItem.title = "Top Rated"
+        topRatedNavigationController.tabBarItem.image = UIImage(named: "star")
+        
+        tabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController]
+        
+        UITabBar.appearance().barTintColor = UIColor(red: 255.0/255.0, green: 216.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        UITabBar.appearance().tintColor = UIColor.blackColor()
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
@@ -41,6 +62,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func createMovieTab(endpoint: String) -> UINavigationController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        let moviesNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
+        let moviesViewController = moviesNavigationController.topViewController as! MovieViewController
+        moviesViewController.endpoint = endpoint
+        
+        return moviesNavigationController
+    }
 
 }
 
