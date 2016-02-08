@@ -96,11 +96,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell.overviewLabel.text = overview
         
         cell.selectionStyle = .None
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor(red: 255.0/255.0, green: 216.0/255.0, blue: 24.0/255.0, alpha: 0.5)
-        cell.selectedBackgroundView = backgroundView
-        
-        
         return cell;
     }
     
