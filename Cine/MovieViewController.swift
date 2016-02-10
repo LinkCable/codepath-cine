@@ -14,30 +14,24 @@ import ReachabilitySwift
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var networkView: UITextView!
     
     var movies: [NSDictionary]?
     var endpoint: String!
+    var reachability: Reachability?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Cine"
+        networkView.hidden = true
         
         tableView.dataSource = self
         tableView.delegate = self
-        
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        
-        grabMovies(nil)
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshMovieList:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
         
-        
-        //code for no internet connection 
-        //http://stackoverflow.com/questions/31400192/popup-alert-when-reachability-connection-is-lost-during-using-the-app-ios-xcode
-        
-        let reachability: Reachability
         do {
             reachability = try Reachability.reachabilityForInternetConnection()
         } catch {
@@ -45,20 +39,15 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             return
         }
         
-        reachability.whenUnreachable = { reachability in
-            let alertController = UIAlertController(title: "Alert", message: "No Internet Connection", preferredStyle: .Alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-        }
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "reachabilityChanged:",
+            name: ReachabilityChangedNotification,
+            object: reachability)
         
         do {
-            try reachability.startNotifier()
+            try reachability!.startNotifier()
         } catch {
-            print("Unable to start Reachability")
-            return
+            print("couldn't start notifier")
         }
     }
 
@@ -134,6 +123,9 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                             }
                     }
                 }
+                else {
+                    refreshControl?.endRefreshing()
+                }
         })
         
         task.resume()
@@ -154,5 +146,22 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.movie = movie
     }
+    
+    
+    func reachabilityChanged(note: NSNotification) {
+        
+        let reachability = note.object as! Reachability
+        
+        if reachability.isReachable() {
+            if reachability.isReachableViaWiFi() {
+                MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                self.networkView.hidden = true
+                self.grabMovies(nil)
+            }
+        } else {
+            self.networkView.hidden = false
+        }
+    }
+
 
 }
